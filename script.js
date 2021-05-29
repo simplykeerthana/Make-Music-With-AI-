@@ -2,10 +2,20 @@
 // adding a variablee to keeep track of the notes
 
 let notes =[];
+//variables to keep track 
+const notesEmptyStaff = "B4/4/r, B4/4/r,B4/4/r,B4/4/r";
+let renderNotes;
+
+//Vexflow variable
+const VF = Vex.Flow;
 
 //event listenter for dom
 document.addEventListener('DOMContentLoaded', () =>{
+
+//Create a new Staff
+createStaff(notesEmptyStaff);  
   
+
     //disable options for user selection
   document.getElementById('duration').addEventListener('change', function(obj){
     
@@ -56,7 +66,27 @@ document.addEventListener('DOMContentLoaded', () =>{
     
     console.log(notes);
   }
-    
-    
   
 })
+
+//Create a Staff
+function createStaff(renderNotes){
+  //remove any old staff
+  const staff = document.getElementById('staff');
+
+  while(staff.hasChildNodes()){
+    staff.removeChild(staff.lastChild);
+  }
+
+  //creating an svg rendereer and attach it to the DIV element
+  var vf = new VF.Factory({renderer:{elementId:'staff'}});
+  var score = vf.EasyScore();
+  var system = vf.system();
+
+  // Add a staff and voices to our systms
+  system.addStave({
+    voices:[score.voice(score.notes(renderNotes))]
+  }).addClef('treble').addTimeSignature('4/4');
+
+  vf.draw();
+}
