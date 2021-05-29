@@ -9,6 +9,9 @@ let renderNotes;
 //Vexflow variable
 const VF = Vex.Flow;
 
+//current duration of the seed meldy
+let totalCurrentDuration =0;
+
 //event listenter for dom
 document.addEventListener('DOMContentLoaded', () =>{
 
@@ -89,4 +92,59 @@ function createStaff(renderNotes){
   }).addClef('treble').addTimeSignature('4/4');
 
   vf.draw();
+}
+
+//parsing notes to renderNotes
+
+function parseNotesToVex(notes){
+  //create empty string
+  let notesString = '';
+  //initialize current duration
+  let currentDuration =0;
+
+  //looping over each notes
+  for (let note of notes){
+    let noteString = '';
+    let noteDuration;
+    //if its a rest
+    if(note.duration.includes('r')){
+      noteDuration = note.duration.replace('r','');
+
+      if(note.isDotted){
+        noteString = noteDuration.replace('.','');
+        noteString = 'B4/' + noteDuration + '/r,';
+
+      }else{
+        noteString = 'B4/' + noteDuration + '/r,';
+      }
+    }
+    else{
+       //if it's not a rest
+       noteString = note.pitch + '/'  + note.duration + ',';
+       noteDuration = note.duration;
+
+    }
+    notesString += noteString;
+
+    //calculate duration
+    let noteDurationInSixteenth = calculateNoteDurationInSixteenth(note);
+
+    //update current duration
+    currentDuration += noteDurationInSixteenth;
+   
+  }
+
+  return [notesString, currentDuration];
+}
+
+function calculateNoteDurationInSixteenth(note){
+  let noteDuration = note.duration.replace('r', '');
+
+  let noteDurationInSixteenth = (16/parseInt(noteDuration));
+
+  if(note.isDotted){
+    noteDurationInSixteenth += noteDurationInSixteenth/2;
+  }
+
+  return noteDurationInSixteenth;
 }
