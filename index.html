@@ -12,7 +12,7 @@
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css" />
 
-    <!-- import the webpage's javascript file -->
+    <!--  the webpage's javascript file -->
     <script src="/script.js" defer></script>
   </head>
   <body>
@@ -37,11 +37,35 @@
        <!-- Pitch --> 
        <label for="pitch">Pitch </label>
        <select id="pitch" required>
+         <option value="" selected disabled>...</option>
+         <option value="C">C</option>
+       <option value="D">D</option>
+       <option value="E">E</option>
+       <option value="F">F</option>
+       <option value="G">G</option>
+       <option value="A">A</option>
+        <option value="B">B</option>
          
            
        </select>
        <!-- Accidental -->
+       <label for="accidental"> Accidental </label>
+       <select id="accidental">
+         <option value="" selected disabled>...</option>
+          <option value="b"> &#9837; </option>
+        <option value=""> &#9838; </option>
+        <option value="#"> &#9839; </option>
+         
+       </select>
        <!-- Octave -->
+       <label for="octave"> Octave </label>
+       <select id="octave"> required>
+         <option value="" selected disabled>...</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+       </select>
+                        
+                        
        <!-- Dot -->
        
        <input id="dotted" type="checkbox" />
