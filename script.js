@@ -64,10 +64,37 @@ createStaff(notesEmptyStaff);
     //create the note
     let note = {'duration': inputDuration, 'pitch': inputNote, 'isDotted': isDotted};
     
-    //add note to the array
-    notes = [...noted, note];
+    let noteDurationInSixteenth = calculateNoteDurationInSixteenth(note);
+
+    if(noteDurationInSixteenth + totalCurrentDuration >16){
+      return false;
+    }
     
-    console.log(notes);
+    //add note to the array
+    notes = [...notes, note];
+
+    let restsString = restsToComplete(notes);
+
+    //parsing notes
+    let [notesString, currentDuration] = parseNotesToVex(notes);
+
+    console.log(restsString, notesString);
+
+    //update total current duration
+    totalCurrentDuration = currentDuration;
+
+    renderNotes = notesString + restsString;
+
+    //Draw the staff
+    createStaff(renderNotes);
+
+    if(totalCurrentDuration === 16)
+    {
+      document.getElementById('input').disabled  = true;
+    }
+
+    
+    //console.log(notes);
   }
   
 })
@@ -147,4 +174,24 @@ function calculateNoteDurationInSixteenth(note){
   }
 
   return noteDurationInSixteenth;
+}
+
+function restsToComplete(notes){
+  let restsDuration =16;
+  let notesDuration = 0;
+
+  for(let note of notes){
+    let noteDuration = calculateNoteDurationInSixteenth(note);
+
+    notesDuration = noteDuration;
+  }
+  restsDuration -= notesDuration;
+
+  let quarterRests = Math.floor(restsDuration/4);
+  let sixteenRests = restsDuration % 4;
+
+  let quarterRestsString = 'B4/4/r,'.repeat(quarterRests);
+  let sixteenthRestsString = "B4/4/r,".repeat(sixteenRests);
+
+  return quarterRestsString + sixteenthRestsString;
 }
